@@ -36,3 +36,14 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+
+**Error Stack**
+
+<details>
+  <summary>Error Stack</summary>
+  
+  ```
+  Paste an excerpt of the error stack displayed on git bash
+  ```
+</details>
