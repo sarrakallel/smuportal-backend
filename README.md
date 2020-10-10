@@ -1,9 +1,10 @@
 # SMU Portal - Backend
 
 
-## Table of content
+## Table of contents
 
 * [Overview](#overview)
+* [Getting Started](#getting-started)
 * [Features](#features)
 * [System requirements](#system-requirements)
 * [Prerequisites](#prerequisites)
@@ -11,13 +12,15 @@
 * [Bug reports](#bug-reports)
 * [License](#license)
 * [Contact](#contact)
-* [Wiki][wiki]
 
 ## Overview
 
 **SMU Portal** is a free and open source portal for universities. It is an attempt at centralizing the different services that SMU offers in one platform to ensure easier and more efficient access for both staff members and students.
 SMU Portal is a junior project developed for the ISS396 course taught at [MedTech](http://www.medtech.tn/).    
 This repository is dedicated to the backend of SMU Portal, you can find the frontend [here](https://github.com/MedTech-CS321/smuportal-frontend).
+
+## Getting Started
+Please refer to our [Installation Guide](https://smu-portal.gitbook.io/get-started/) on GitBook.
 
 ## Features
 - Authentication with support for email and app based 2FA.
@@ -61,9 +64,6 @@ Please refrain from contacting the contributors of this project individually. Fo
 
 - **Email**: <SMUPortalTA@msb.tn>
 - **GitHub issue tracker**: [issue tracker][issue-tracker] (report bugs here)
-
-## Additional information
-For a complete guide on how to setup a development environment and run the project, please check the [Wiki][wiki].
 
 [issue-tracker]: https://github.com/MedTech-CS321/smuportal-backend/issues
 [package.json]: https://github.com/MedTech-CS321/smuportal-backend/blob/master/package.json
