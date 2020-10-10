@@ -1,5 +1,7 @@
 # SMU Portal - Backend
-
+<p align="center">
+  <img alt="smu portal logo" src="https://user-images.githubusercontent.com/71770363/95664844-b27e3380-0b4b-11eb-839b-c21a27fba05e.png" />
+</p>
 
 ## Table of contents
 
