@@ -3,37 +3,37 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 const Token = require("../../models/Token");
-const { emailMessages, transporter } = require("../../helpers/mailer");
+const { authEmailMessages, transporter } = require("../../helpers/mailer");
 const { changePasswordValidation } = require("../../helpers/validation");
 
 const router = Router({
-  mergeParams: true
+  mergeParams: true,
 });
 
 //It s like a request to change password
 router.post("/resetLogin", async (req, res) => {
   // Check if email exists
   const userExists = await User.findOne({
-    email: req.body.email
+    email: req.body.email,
   });
 
   if (!userExists)
     return res.status(400).send({
-      message: "Email not found!"
+      message: "Email not found!",
     });
 
   const token = new Token({
     _userId: userExists._id,
     token: crypto.randomBytes(32).toString("hex"),
-    tokenType: "passwordReset"
+    tokenType: "passwordReset",
   });
 
   const confirmationUrl =
     `http://localhost:4200/response-reset-password/` + token.token;
 
   transporter.sendMail(
-    emailMessages(userExists.email, confirmationUrl).resetPassword(),
-    function(error, info) {
+    authEmailMessages(userExists.email, confirmationUrl).resetPassword(),
+    function (error, info) {
       if (error) {
         console.log(error);
       } else {
@@ -48,12 +48,12 @@ router.post("/resetLogin", async (req, res) => {
     console.log(token);
   } catch (err) {
     return res.status(500).send({
-      success: false
+      success: false,
     });
   }
 
   return res.send({
-    success: true
+    success: true,
   });
 });
 
@@ -61,15 +61,15 @@ router.post("/resetLogin", async (req, res) => {
 router.get("/resetPasswordConfirmation/:token", async (req, res) => {
   const token = await Token.findOne({
     token: req.params.token,
-    tokenType: "passwordReset"
+    tokenType: "passwordReset",
   });
   if (!token)
     return res.status(400).send({
-      message: "Invalid token"
+      message: "Invalid token",
     });
 
   const user = await User.findOne({
-    _id: token._userId
+    _id: token._userId,
   });
   if (!user) return res.status(500).send();
   //|| tokenType != 'passwordReset'
@@ -81,7 +81,7 @@ router.get("/resetPasswordConfirmation/:token", async (req, res) => {
   }
 
   return res.send({
-    success: true
+    success: true,
   });
 });
 
@@ -92,22 +92,22 @@ router.post("/changePassword/:token", async (req, res) => {
 
   if (error)
     return res.status(400).send({
-      message: error.details[0].message
+      message: error.details[0].message,
     });
 
   const token = await Token.findOne({
     token: req.params.token,
-    tokenType: "passwordReset"
+    tokenType: "passwordReset",
   });
 
   if (!token)
     return res.status(400).send({
-      message: "Invalid token"
+      message: "Invalid token",
     });
   console.log(token);
 
   const user = await User.findOne({
-    _id: token._userId
+    _id: token._userId,
   });
   if (!user) return res.status(500).send();
 
@@ -123,7 +123,7 @@ router.post("/changePassword/:token", async (req, res) => {
   }
 
   return res.send({
-    success: true
+    success: true,
   });
 });
 

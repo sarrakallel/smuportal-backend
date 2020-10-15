@@ -3,11 +3,11 @@ const userService = require("../../services/user.service")();
 const roleService = require("../../services/role.service")();
 const Token = require("../../models/Token");
 const crypto = require("crypto");
-const { emailMessages, transporter } = require("../../helpers/mailer");
+const { authEmailMessages, transporter } = require("../../helpers/mailer");
 const { registerValidation } = require("../../helpers/validation");
 
 const router = Router({
-  mergeParams: true
+  mergeParams: true,
 });
 
 router.post("/register", async (req, res, next) => {
@@ -21,16 +21,17 @@ router.post("/register", async (req, res, next) => {
     const token = new Token({
       _userId: user._id,
       token: crypto.randomBytes(32).toString("hex"),
-      tokenType: "confirmEmail"
+      tokenType: "confirmEmail",
     });
 
     // Should be removed, for testing purposes only!
-    const confirmationUrl = `http://localhost:4200/confirm-email/` + token.token;
+    const confirmationUrl =
+      `http://localhost:4200/confirm-email/` + token.token;
 
     // Should be moved to mailer service
     transporter.sendMail(
-      emailMessages(user.email, confirmationUrl).confirmEmail(),
-      function(error, info) {
+      authEmailMessages(user.email, confirmationUrl).confirmEmail(),
+      function (error, info) {
         if (error) {
           throw error;
         } else {

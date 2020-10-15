@@ -1,21 +1,24 @@
-require('dotenv').config();
-const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
+const from = `SMU Portal <smu.portaliss396@gmail.com>`;
 
-const emailMessages = (email, url) => {
+const authEmailMessages = (email, url) => {
   return {
     confirmEmail: function () {
       return {
+        from,
         to: email,
-        subject: 'Confirm Email',
+        subject: "Confirm Email",
         html: `Please click this link to confirm your account <a href="${url}">${url}</a>`,
       };
     },
     resetPassword: function () {
       return {
+        from,
         to: email,
-        subject: 'Reset password',
+        subject: "Reset password",
         html: `Please click this link to reset your account <a href="${url}">${url}</a>`,
       };
     },
@@ -26,8 +29,9 @@ const otpEmailMessages = (email, otp) => {
   return {
     sendOtp: function () {
       return {
+        from,
         to: email,
-        subject: 'Two Factor Authorization Code',
+        subject: "Two Factor Authorization Code",
         html: `Code : ${otp}`,
       };
     },
@@ -38,8 +42,9 @@ const boxBookingConfirmation = (user, email, box, date, start, end) => {
   return {
     sendBoxConfirmation: function () {
       return {
+        from,
         to: email,
-        subject: 'Box reservation',
+        subject: "Box reservation",
         html: `<h3><strong>Dear ${user},</strong></h3> Box ${box} has been booked for you on the ${date} from ${start} until ${end}.
         <br>
         <br>Please make sure to keep the box clean after you leave.
@@ -78,10 +83,12 @@ const transporter = nodemailer.createTransport({
     refreshToken: process.env.G_REFRESH_TOKEN,
     accessToken: accessToken,
   },
+  debug: true,
+  logger: true,
 });
 
 module.exports = {
-  emailMessages: emailMessages,
+  authEmailMessages: authEmailMessages,
   otpEmailMessages: otpEmailMessages,
   transporter: transporter,
   boxBookingConfirmation: boxBookingConfirmation,
