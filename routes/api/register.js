@@ -42,6 +42,18 @@ router.post("/register", async (req, res, next) => {
     await token.save();
     res.send({ success: true }).status(201);
   } catch (err) {
+    // Handling duplicates
+    if (err.name === "MongoError" && err.code === 11000) {
+      const field = Object.keys(err.keyPattern)[0];
+      // Styling
+      const message = `${
+        field.charAt(0).toUpperCase() + field.slice(1)
+      } Already Exists`;
+      next({
+        message,
+        statusCode: 409,
+      });
+    }
     next(err);
   }
 });
