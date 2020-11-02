@@ -8,7 +8,8 @@
   },
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "start": "nodemon --no-warnings server.js"
+    "start": "nodemon --no-warnings server.js",
+    "seed": "node models/seed.js"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.0",
