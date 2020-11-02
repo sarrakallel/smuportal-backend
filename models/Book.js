@@ -19,8 +19,8 @@ const bookSchema = new mongoose.Schema({
     type: Number,
     unique: true,
     required: true,
-    min: 10,
-    max: 13,
+    min: 1000000000,
+    max: 9999999999999,
     validate: {
       validator: Number.isInteger,
       message: "{VALUE} is not an integer value"

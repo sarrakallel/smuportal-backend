@@ -6,7 +6,7 @@ function bookService() {
     }
 
     async function addBook(title, author, isbn) {
-        return Book.create({title: title, author: author, isbn: isbn})
+        return Book.create({Title: title, Author: author, ISBN: isbn})
     }
 
     async function deleteBook(isbn) {
