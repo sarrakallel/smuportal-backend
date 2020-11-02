@@ -8,15 +8,32 @@ const path = require("path");
 // Loading env variables
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
-mongoose.connect(
-  process.env.DB_URL,
-  {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  () => console.log("[FOR SEEDING] Connection to DB established!")
-);
+// Connect to DB
+const options = {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}
+mongoose.connect(process.env.DB_URL, options);
+
+mongoose.connection.on('connected', function () {
+  console.log('Database connection established!');
+}); 
+
+mongoose.connection.on('error',function (err) { 
+  console.log('Database connection connection error: ' + err);
+}); 
+
+mongoose.connection.on('disconnected', function () { 
+  console.log('Database disconnected'); 
+});
+
+process.on('SIGINT', function() {   
+  mongoose.connection.close(function () { 
+    console.log('App terminated... Database connection closed'); 
+    process.exit(0); 
+  }); 
+}); 
 
 // Seeding roles
 Role.create([
@@ -24,7 +41,7 @@ Role.create([
   { name: "professor", _apps: [], _userId: [] },
 ])
   .then((roles) => {
-    console.log("Roles Seeded Successfully");
+    console.log("[Model: Roles] seeded successfully");
     return roles;
   })
   .then((roles) => {
@@ -64,5 +81,10 @@ Role.create([
       },
     ]);
   })
-  .then((apps) => console.log("Apps Seeded Successfully"))
-  .catch((err) => console.error(err));
+  .then(() => {
+    console.log("[Model: Apps] seeded successfully");
+    mongoose.disconnect();
+    console.log('Seeding terminated... Database connection closed\n');
+    console.log('You can now safely run `npm start`');
+    process.exit(0);
+  }).catch((err) => console.error(err));
