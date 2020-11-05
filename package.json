@@ -9,7 +9,8 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "nodemon --no-warnings server.js",
-    "seed": "node models/seed.js"
+    "seed": "node models/seed.js",
+    "createApp": "node models/appCreator.js"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.0",
