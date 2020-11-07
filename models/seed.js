@@ -13,27 +13,27 @@ const options = {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}
+};
 mongoose.connect(process.env.DB_URL, options);
 
-mongoose.connection.on('connected', function () {
-  console.log('Database connection established!');
-}); 
-
-mongoose.connection.on('error',function (err) { 
-  console.log('Database connection connection error: ' + err);
-}); 
-
-mongoose.connection.on('disconnected', function () { 
-  console.log('Database disconnected'); 
+mongoose.connection.on("connected", function () {
+  console.log("Database connection established!");
 });
 
-process.on('SIGINT', function() {   
-  mongoose.connection.close(function () { 
-    console.log('App terminated... Database connection closed'); 
-    process.exit(0); 
-  }); 
-}); 
+mongoose.connection.on("error", function (err) {
+  console.log("Database connection connection error: " + err);
+});
+
+mongoose.connection.on("disconnected", function () {
+  console.log("Database disconnected");
+});
+
+process.on("SIGINT", function () {
+  mongoose.connection.close(function () {
+    console.log("App terminated... Database connection closed");
+    process.exit(0);
+  });
+});
 
 // Seeding roles
 Role.create([
@@ -79,12 +79,12 @@ Role.create([
           { name: "Ban User" },
         ],
       },
-    ]);
+    ]).then(() => {
+      console.log("[Model: Apps] seeded successfully");
+      mongoose.disconnect();
+      console.log("Seeding terminated... Database connection closed\n");
+      console.log("You can now safely run `npm start`");
+      process.exit(0);
+    });
   })
-  .then(() => {
-    console.log("[Model: Apps] seeded successfully");
-    mongoose.disconnect();
-    console.log('Seeding terminated... Database connection closed\n');
-    console.log('You can now safely run `npm start`');
-    process.exit(0);
-  }).catch((err) => console.error(err));
+  .catch((err) => console.error(err));
